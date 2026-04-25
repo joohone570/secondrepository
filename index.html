@@ -1,101 +1,214 @@
-# 웹서버 배포 실습
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIT CE | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset & General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
 
-### Vercel은 CI/CD를 지원하는 대표적인 도구 중 하나
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #004ea2; }
+        .nav-links { display: flex; }
+        .nav-links li { margin-left: 2rem; }
+        .nav-links a:hover { color: #004ea2; font-weight: bold; }
 
-- **Continuous Integration** and **Continuous Deployment**
-- CI → github, CD → Vercel
-- 개발로만 끝나서는 안된다.
-    - 실제 세상에 배포를 하고, 개선하는 과정을 거쳐야 한다.
-    - 매우 어려운 작업이지만, Vercel을 사용하면 매우 단순하다.
-- Vercel이 모든 것이 아니다.
-    - 다양한 서비스들이 존재하고 계속 개선되고 있다.
-    - 이런것들을 따라가려면 원리가 중요하다.
-- 도구 학습이 목적이 아니라 원리를 연습하여 자기것으로 만드는 것이 목적
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            background: linear-gradient(135deg, #004ea2 0%, #00a0e9 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        .hero-text h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero-text p { font-size: 1.2rem; opacity: 0.9; }
 
-### 가장 일반적인 개발, 배포 및 운영 방법
+        /* Common Section Style */
+        section { padding: 100px 10%; min-height: 80vh; }
+        h2 { font-size: 2.5rem; margin-bottom: 3rem; text-align: center; color: #004ea2; }
 
-- **로컬(내 PC):** 개발 서버 역할 (개발하면서 코드를 돌려봄)
-- **GitHub:** 소스 코드 보관소 및 협업 도구
-- **Vercel:** 실제 운영 서버 (배포 및 서비스 제공)
+        /* About Section */
+        .about-container { display: flex; gap: 50px; align-items: center; }
+        .profile-img { width: 300px; height: 300px; background: #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
 
-### 실습 내용
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .skill-card {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .skill-card:hover { transform: translateY(-10px); background: #eef6ff; }
+        .skill-card h3 { margin-bottom: 10px; color: #333; }
 
-- AI로 자신의 포트폴리오 웹페이지를 만들고, 웹으로 세상에 배포하는 과정
+        /* Projects Section */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .project-img { height: 200px; background: #eee; display: flex; align-items: center; justify-content: center; color: #999;}
+        .project-info { padding: 20px; }
+        .project-info h3 { margin-bottom: 10px; }
+        .tag { display: inline-block; background: #004ea2; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-right: 5px;}
 
-### 전체 흐름
+        /* Contact Section */
+        #contact { background: #f9f9f9; text-align: center; }
+        .contact-links { margin-top: 2rem; }
+        .contact-links a { margin: 0 1rem; font-size: 1.2rem; color: #555; border-bottom: 2px solid #004ea2; }
 
-- AI를 이용하여 포트폴리오를 위한 코드 생성할 것
-    - 추천 aistudio.google.com
-        - 다른 도구 사용가능
-    - 예시
-        - 나는 금오공대  컴공 전공 2학년이고 AI를 이용한 웹과 앱 개발자를 희망하고 있어
-        - "HTML5, CSS3, Vanilla JavaScript만 사용하여 모던한 가상의 개발자 포트폴리오를 만들어줘.
-         외부 라이브러리 없이 한 페이지로 구성하고 프로젝트 섹션에는 카드 레이아웃을 적용해줘.”
-- VSCode로 생성된 코드를 저장
-    - 폴더와 파일을 생성하여 실행.
-- github에 프로젝트 생성
-    - 새로운 프로젝트 생성
-vscode에서 개발 pc와 github 프로젝트를 연결하고 업로드
-- 명령어 설명
-    - 1. create a new repository on the command line
-        - 현재 VS Code에서 코드를 새로 작성한 후 아직 Git 설정을 한 번도 하지 않았다면 내 코드를 github에 업로드
-        - 자동으로 github에 프로젝트를 생성하지는 않음
-# 1. 프로젝트 제목이 담긴 README.md 파일을 생성합니다.
-echo "# student_portfolio" >> README.md 
+        /* Footer */
+        footer { padding: 2rem; text-align: center; background: #333; color: white; }
 
-# 2. 현재 폴더를 Git이 관리하는 로컬 저장소로 초기화합니다.
-git init 
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-container { flex-direction: column; text-align: center; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
 
-# 3. 생성한 README.md 파일을 스테이징 영역(올릴 준비 단계)에 추가합니다.
-# (팁: 모든 코드를 올리려면 'git add .'을 사용하세요.)
-git add README.md 
+    <nav>
+        <div class="logo">KIT CE</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-# 4. 준비된 파일을 'first commit'이라는 메시지와 함께 로컬 저장소에 기록합니다.
-git commit -m "first commit" 
+    <section id="home">
+        <div class="hero-text">
+            <h1>안녕하세요, 꿈을 코딩하는 개발자입니다.</h1>
+            <p>금오공과대학교 컴퓨터공학부 | 웹 & 앱 개발자 지망생</p>
+        </div>
+    </section>
 
-# 5. 기본 브랜치 이름을 'main'으로 변경합니다.
-git branch -M main 
+    <section id="about">
+        <h2>About Me</h2>
+        <div class="about-container">
+            <div class="profile-img">Photo</div>
+            <div class="about-text">
+                <p>안녕하세요! 금오공과대학교에서 컴퓨터공학을 전공하고 있는 2학년 학생입니다.<br>
+                새로운 기술을 배우는 것을 즐기며, 사용자에게 편리함을 주는 서비스를 만드는 것에 열정이 있습니다.</p>
+                <br>
+                <p>📍 <strong>Location:</strong> Gumi, South Korea</p>
+                <p>🎓 <strong>Education:</strong> Kumoh National Institute of Technology</p>
+                <p>📧 <strong>Email:</strong> yourname@kumoh.ac.kr</p>
+            </div>
+        </div>
+    </section>
 
-# 6. 내 로컬 저장소를 온라인상의 GitHub 저장소(URL)와 연결합니다.
-git remote add origin https://github.com/eeesub/student_portfolio.git 
+    <section id="skills">
+        <h2>My Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <h3>Frontend</h3>
+                <p>HTML5, CSS3, JavaScript</p>
+            </div>
+            <div class="skill-card">
+                <h3>Mobile</h3>
+                <p>Android Studio, Java</p>
+            </div>
+            <div class="skill-card">
+                <h3>CS Foundations</h3>
+                <p>Data Structure, C/C++</p>
+            </div>
+            <div class="skill-card">
+                <h3>Tools</h3>
+                <p>Git, GitHub, Figma</p>
+            </div>
+        </div>
+    </section>
 
-# 7. 로컬의 코드를 GitHub(origin)의 main 브랜치로 업로드합니다.
-# (-u 옵션은 이후 'git push'만 입력해도 자동으로 이곳에 올리도록 설정합니다.)
-git push -u origin main
-- 2. push an existing repository from the command line
-    - 1번은 했다면 코드가 수정된 경우에 사용
-PS E:\WEB_PROG\my_potfolio> git add .
-PS E:\WEB_PROG\my_potfolio> git commit -m "Add index.html and other files"
-[main e774b3e] Add index.html and other files
- 3 files changed, 205 insertions(+)
- create mode 100644 index.html
- create mode 100644 script.js
- create mode 100644 style.css
-PS E:\WEB_PROG\my_potfolio> git push
-Enumerating objects: 6, done.
-...
-PS E:\WEB_PROG\my_potfolio> 
-결과 확인
-- vercel에 배포하여 실행
-    - [**vercel.com**](https://vercel.com/)
-        - 가입할때 반드시 **OAuth를 github.com**으로 할것
-    - **Vercel 대시보드(vercel.com)** 로그인
-    - **Add New > Project** 버튼 클릭
-    - 저장소 선택 (Import):
-- 목록을 확인하고 import를 클릭
-- **프로젝트 설정 및 배포:** `Configure Project` 화면이 나타나면 별도의 설정 변경 없이 **[Deploy]** 버튼을 클릭
-- **완료**: 약 1분 내외의 빌드 과정이 끝나면 배포 완료 및 고유 URL 발급
-- **완성**
-- 다음과 같이 웹에서 확인하려면 domain 주소가 필요
-    - https://student-portfolio-beta-five.vercel.app/
-    - 도메인 주소를 찾는 방법
-        
-        ![image.png](attachment:e5d4b007-bb42-4533-935c-5c5933e98174:image.png)
-        
-        - 목록에서 제목을 클릭
-            
-            ![image.png](attachment:c05b9e2f-cb2a-4c11-8f8b-f8d7ac112415:image.png)
-            
-- 수정후 재배포하는 방법
-    - git에 push하면 자동적으로 재배포됨
-를 통해서 과제를 어떻게 해야 하는지 설명
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-img">Project Image</div>
+                <div class="project-info">
+                    <span class="tag">Web</span>
+                    <h3>가상 포트폴리오 사이트</h3>
+                    <p>HTML과 CSS만을 활용하여 제작한 개인 브랜딩 페이지입니다.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img">Project Image</div>
+                <div class="project-info">
+                    <span class="tag">App</span>
+                    <h3>학식 알리미 앱 (가상)</h3>
+                    <p>금오공대 학식 정보를 실시간으로 확인하는 안드로이드 앱 프로젝트입니다.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img">Project Image</div>
+                <div class="project-info">
+                    <span class="tag">C++</span>
+                    <h3>성적 관리 시스템</h3>
+                    <p>객체지향 프로그래밍 수업에서 제작한 CLI 기반 성적 관리 프로그램입니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <p>함께 성장할 동료를 찾으시나요? 언제든 연락주세요!</p>
+        <div class="contact-links">
+            <a href="https://github.com" target="_blank">GitHub</a>
+            <a href="https://velog.io" target="_blank">Blog</a>
+            <a href="mailto:youremail@example.com">Email</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 YourName. All rights reserved. Powered by Kumoh National Inst. of Tech.</p>
+    </footer>
+
+</body>
+</html>
