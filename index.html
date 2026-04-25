@@ -1,3 +1,101 @@
-<html>
-    
-</html>
+# 웹서버 배포 실습
+
+### Vercel은 CI/CD를 지원하는 대표적인 도구 중 하나
+
+- **Continuous Integration** and **Continuous Deployment**
+- CI → github, CD → Vercel
+- 개발로만 끝나서는 안된다.
+    - 실제 세상에 배포를 하고, 개선하는 과정을 거쳐야 한다.
+    - 매우 어려운 작업이지만, Vercel을 사용하면 매우 단순하다.
+- Vercel이 모든 것이 아니다.
+    - 다양한 서비스들이 존재하고 계속 개선되고 있다.
+    - 이런것들을 따라가려면 원리가 중요하다.
+- 도구 학습이 목적이 아니라 원리를 연습하여 자기것으로 만드는 것이 목적
+
+### 가장 일반적인 개발, 배포 및 운영 방법
+
+- **로컬(내 PC):** 개발 서버 역할 (개발하면서 코드를 돌려봄)
+- **GitHub:** 소스 코드 보관소 및 협업 도구
+- **Vercel:** 실제 운영 서버 (배포 및 서비스 제공)
+
+### 실습 내용
+
+- AI로 자신의 포트폴리오 웹페이지를 만들고, 웹으로 세상에 배포하는 과정
+
+### 전체 흐름
+
+- AI를 이용하여 포트폴리오를 위한 코드 생성할 것
+    - 추천 aistudio.google.com
+        - 다른 도구 사용가능
+    - 예시
+        - 나는 금오공대  컴공 전공 2학년이고 AI를 이용한 웹과 앱 개발자를 희망하고 있어
+        - "HTML5, CSS3, Vanilla JavaScript만 사용하여 모던한 가상의 개발자 포트폴리오를 만들어줘.
+         외부 라이브러리 없이 한 페이지로 구성하고 프로젝트 섹션에는 카드 레이아웃을 적용해줘.”
+- VSCode로 생성된 코드를 저장
+    - 폴더와 파일을 생성하여 실행.
+- github에 프로젝트 생성
+    - 새로운 프로젝트 생성
+vscode에서 개발 pc와 github 프로젝트를 연결하고 업로드
+- 명령어 설명
+    - 1. create a new repository on the command line
+        - 현재 VS Code에서 코드를 새로 작성한 후 아직 Git 설정을 한 번도 하지 않았다면 내 코드를 github에 업로드
+        - 자동으로 github에 프로젝트를 생성하지는 않음
+# 1. 프로젝트 제목이 담긴 README.md 파일을 생성합니다.
+echo "# student_portfolio" >> README.md 
+
+# 2. 현재 폴더를 Git이 관리하는 로컬 저장소로 초기화합니다.
+git init 
+
+# 3. 생성한 README.md 파일을 스테이징 영역(올릴 준비 단계)에 추가합니다.
+# (팁: 모든 코드를 올리려면 'git add .'을 사용하세요.)
+git add README.md 
+
+# 4. 준비된 파일을 'first commit'이라는 메시지와 함께 로컬 저장소에 기록합니다.
+git commit -m "first commit" 
+
+# 5. 기본 브랜치 이름을 'main'으로 변경합니다.
+git branch -M main 
+
+# 6. 내 로컬 저장소를 온라인상의 GitHub 저장소(URL)와 연결합니다.
+git remote add origin https://github.com/eeesub/student_portfolio.git 
+
+# 7. 로컬의 코드를 GitHub(origin)의 main 브랜치로 업로드합니다.
+# (-u 옵션은 이후 'git push'만 입력해도 자동으로 이곳에 올리도록 설정합니다.)
+git push -u origin main
+- 2. push an existing repository from the command line
+    - 1번은 했다면 코드가 수정된 경우에 사용
+PS E:\WEB_PROG\my_potfolio> git add .
+PS E:\WEB_PROG\my_potfolio> git commit -m "Add index.html and other files"
+[main e774b3e] Add index.html and other files
+ 3 files changed, 205 insertions(+)
+ create mode 100644 index.html
+ create mode 100644 script.js
+ create mode 100644 style.css
+PS E:\WEB_PROG\my_potfolio> git push
+Enumerating objects: 6, done.
+...
+PS E:\WEB_PROG\my_potfolio> 
+결과 확인
+- vercel에 배포하여 실행
+    - [**vercel.com**](https://vercel.com/)
+        - 가입할때 반드시 **OAuth를 github.com**으로 할것
+    - **Vercel 대시보드(vercel.com)** 로그인
+    - **Add New > Project** 버튼 클릭
+    - 저장소 선택 (Import):
+- 목록을 확인하고 import를 클릭
+- **프로젝트 설정 및 배포:** `Configure Project` 화면이 나타나면 별도의 설정 변경 없이 **[Deploy]** 버튼을 클릭
+- **완료**: 약 1분 내외의 빌드 과정이 끝나면 배포 완료 및 고유 URL 발급
+- **완성**
+- 다음과 같이 웹에서 확인하려면 domain 주소가 필요
+    - https://student-portfolio-beta-five.vercel.app/
+    - 도메인 주소를 찾는 방법
+        
+        ![image.png](attachment:e5d4b007-bb42-4533-935c-5c5933e98174:image.png)
+        
+        - 목록에서 제목을 클릭
+            
+            ![image.png](attachment:c05b9e2f-cb2a-4c11-8f8b-f8d7ac112415:image.png)
+            
+- 수정후 재배포하는 방법
+    - git에 push하면 자동적으로 재배포됨
+를 통해서 과제를 어떻게 해야 하는지 설명
